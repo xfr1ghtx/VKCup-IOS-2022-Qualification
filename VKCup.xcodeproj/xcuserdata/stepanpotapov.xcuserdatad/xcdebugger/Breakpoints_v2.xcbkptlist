@@ -64,8 +64,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "21"
             endingLineNumber = "21"
-            landmarkName = "FirstViewModel"
-            landmarkType = "3">
+            landmarkName = "interests"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -94,8 +94,8 @@
             filePath = "VKCup/Scene/First/FirstViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
             landmarkName = "bindToViewModel()"
             landmarkType = "7">
          </BreakpointContent>
@@ -130,6 +130,54 @@
             endingLineNumber = "70"
             landmarkName = "getAllInterests()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E6A1F645-8212-490B-9A70-A9261023DC44"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VKCup/Scenes/PickInterest/PickInterestViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "getAllInterests()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E6A1F645-8212-490B-9A70-A9261023DC44 - bd4331ae834d30fa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKCup.PickInterestViewModel.getAllInterests() -&gt; ()"
+                  moduleName = "VKCup"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanpotapov/Develop/VKCup-2022/VKCup/Scenes/PickInterest/PickInterestViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "E6A1F645-8212-490B-9A70-A9261023DC44 - f5cbcfe3e25120f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;VKCup.Interest&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in VKCup.PickInterestViewModel.getAllInterests() -&gt; ()"
+                  moduleName = "VKCup"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stepanpotapov/Develop/VKCup-2022/VKCup/Scenes/PickInterest/PickInterestViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "73"
+                  endingLineNumber = "73"
+                  offsetFromSymbolStart = "68">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

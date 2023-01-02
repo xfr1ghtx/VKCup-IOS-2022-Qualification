@@ -1,11 +1,11 @@
 //
-//  InterestSelector.swift
+//  InterestTagSelector.swift
 //  VKCup
 //
 
 import UIKit
 
-final class InterestSelector: UIView {
+final class InterestTagSelector: UIView {
     // MARK: - Public properties
     
     var isSelected: Bool = false {

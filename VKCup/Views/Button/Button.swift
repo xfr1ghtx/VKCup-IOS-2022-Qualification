@@ -10,6 +10,12 @@ final class Button: UIButton {
     
     private let style: ButtonStyle
     
+    override var isHighlighted: Bool{
+        didSet {
+            updateAppearance()
+        }
+    }
+    
     // MARK: - Lifecycle methods
     
     override func layoutSubviews() {
@@ -38,5 +44,11 @@ final class Button: UIButton {
         backgroundColor = style.backgroundColor
         setTitleColor(style.textColor, for: .normal)
         titleLabel?.font = style.font
+    }
+    
+    // MARK: - Private methods
+    
+    private func updateAppearance() {
+        backgroundColor = isHighlighted ? style.highlightedBackgroundColor : style.backgroundColor
     }
 }

@@ -17,6 +17,15 @@ enum ButtonStyle {
         }
     }
     
+    var highlightedBackgroundColor: UIColor? {
+        switch self {
+        case .primary:
+            return .appGray
+        case .secondary:
+            return .appDarkGray
+        }
+    }
+    
     var textColor: UIColor? {
         switch self {
         case .primary:

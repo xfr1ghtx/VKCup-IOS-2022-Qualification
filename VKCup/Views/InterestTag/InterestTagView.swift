@@ -19,10 +19,9 @@ final class InterestTagView: UICollectionViewCell {
     
     // MARK: - Private properties
     
-    private let container = UIStackView()
     private let label = UILabel()
     private let divider = UIView()
-    private let selector = InterestSelector()
+    private let selector = InterestTagSelector()
     
     // MARK: - Inits
     
@@ -59,7 +58,6 @@ final class InterestTagView: UICollectionViewCell {
     
     private func setup() {
         setupSuperview()
-        setupContainer()
         setupLabel()
         setupDivider()
         setupSelector()
@@ -69,39 +67,35 @@ final class InterestTagView: UICollectionViewCell {
         layer.cornerRadius = 12
     }
     
-    private func setupContainer() {
-        container.axis = .horizontal
-        container.spacing = 11
-        container.alignment = .center
-        
-        addSubview(container)
-        container.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(10)
-            make.leading.trailing.equalToSuperview().inset(11)
-        }
-    }
-    
     private func setupLabel() {
         label.text = "Test"
         label.font = InterestTagStyle.font
         label.textColor = InterestTagStyle.textColor
-        container.addArrangedSubview(label)
+        addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(10)
+            make.leading.equalToSuperview().offset(12)
+        }
     }
     
     private func setupDivider() {
         divider.layer.cornerRadius = 0.5
-        
-        container.addArrangedSubview(divider)
+        addSubview(divider)
         divider.snp.makeConstraints { make in
             make.height.equalTo(20)
             make.width.equalTo(1)
+            make.leading.equalTo(label.snp.trailing).offset(14)
+            make.centerY.equalToSuperview()
         }
     }
     
     private func setupSelector() {
-        container.addArrangedSubview(selector)
+        addSubview(selector)
         selector.snp.makeConstraints { make in
             make.size.equalTo(18)
+            make.leading.equalTo(divider.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview()
         }
     }
     

@@ -1,12 +1,12 @@
 //
-//  FirstViewController.swift
+//  PickInterestViewController.swift
 //  VKCup
 //
 
 import UIKit
 import SnapKit
 
-class FirstViewController: UIViewController {
+class PickInterestViewController: UIViewController {
     // MARK: - Private properties
     
     private let container = UIStackView()
@@ -15,22 +15,23 @@ class FirstViewController: UIViewController {
     private let laterButton = Button(style: .secondary)
     
     lazy private var interestCollection: UICollectionView = {
-        let layout = FlowLayout(minimumInteritemSpacing: 8, minimumLineSpacing: 8)
+        let layout = InterestTagsLayout(minimumInteritemSpacing: 8, minimumLineSpacing: 8)
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 134, right: 0)
         return collectionView
     }()
-    
+    private let continueButtonContainer = PassthroughView(frame: .zero)
     private let continueButton = Button(style: .primary)
     private var buttonBottomConstraint: Constraint?
     
-    private let viewModel: FirstViewModel
+    private let viewModel: PickInterestViewModel
 
     
     // MARK: - Inits
     
-    init(viewModel: FirstViewModel) {
+    init(viewModel: PickInterestViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,11 +57,14 @@ class FirstViewController: UIViewController {
     // MARK: - Bind to viewmodel
     
     private func bindToViewModel() {
-        viewModel.onWillShowButton = { [weak self] in
-            self?.showContinueButton()
+        viewModel.onDidAddInterest = { [weak self] indexPath, needShowButton in
+            if needShowButton {
+                self?.showContinueButton()
+            }
+            self?.scrollToPressedTag(with: indexPath)
         }
         
-        viewModel.onWillHideButton = { [weak self] in
+        viewModel.onDidRemoveLastInterest = { [weak self] in
             self?.hideContinueButton()
         }
         
@@ -76,23 +80,38 @@ class FirstViewController: UIViewController {
     // MARK: - Actions
     
     @objc
-    private func goToNextScreen() {
-        viewModel.showNextScreen()
+    private func handleContinueButton() {
+        viewModel.tapOnContinueButton()
+    }
+    
+    @objc
+    private func handleLaterButton() {
+        viewModel.tapOnLaterButton()
     }
     
     // MARK: - Private methods
     
+    private func scrollToPressedTag(with indexPath: IndexPath) {
+        guard let cell = interestCollection.cellForItem(at: indexPath) else {
+            return
+        }
+        interestCollection.scrollRectToVisible(cell.frame, animated: true)
+    }
+    
     private func showContinueButton() {
-        buttonBottomConstraint?.update(offset: -34)
+        buttonBottomConstraint?.update(inset: 34)
+        continueButtonContainer.isHidden = false
         UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
+            self.continueButtonContainer.layoutIfNeeded()
         }
     }
     
     private func hideContinueButton() {
         buttonBottomConstraint?.update(offset: 120)
         UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
+            self.continueButtonContainer.layoutIfNeeded()
+        } completion: { _ in
+            self.continueButtonContainer.isHidden = true
         }
     }
     
@@ -144,7 +163,7 @@ class FirstViewController: UIViewController {
     
     private func setupLaterButton() {
         laterButton.setTitle("Позже", for: .normal)
-        laterButton.addTarget(self, action: #selector(goToNextScreen), for: .touchUpInside)
+        laterButton.addTarget(self, action: #selector(handleLaterButton), for: .touchUpInside)
         headerContainer.addArrangedSubview(laterButton)
         laterButton.snp.makeConstraints { make in
             make.height.equalTo(40)
@@ -160,26 +179,36 @@ class FirstViewController: UIViewController {
         interestCollection.allowsMultipleSelection = true
         interestCollection.dataSource = self
         interestCollection.delegate = self
-        interestCollection.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 134, right: 0)
         
         container.addArrangedSubview(interestCollection)
-        container.setCustomSpacing(20, after: interestCollection)
+        container.setCustomSpacing(0, after: interestCollection)
     }
     
     private func setupContinueButton() {
+        view.addSubview(continueButtonContainer)
+        continueButtonContainer.backgroundColor = .clear
+        continueButtonContainer.isHidden = true
+        continueButtonContainer.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(174)
+        }
+        
+        
         continueButton.setTitle("Продолжить", for: .normal)
-        continueButton.addTarget(self, action: #selector(goToNextScreen), for: .touchUpInside)
-        view.addSubview(continueButton)
+        continueButton.addTarget(self, action: #selector(handleContinueButton), for: .touchUpInside)
+        continueButtonContainer.addSubview(continueButton)
         continueButton.snp.makeConstraints { make in
-            buttonBottomConstraint = make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(120).constraint
+            buttonBottomConstraint = make.bottom.equalToSuperview().offset(120).constraint
             make.centerX.equalToSuperview()
         }
+        
     }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 
-extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension PickInterestViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InterestTagView.identifier, for: indexPath) as? InterestTagView else {
             return InterestTagView()
@@ -195,13 +224,10 @@ extension FirstViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.addSelectedInterests(index: indexPath.item)
+        viewModel.addSelectedInterests(indexPath: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        viewModel.removeSelectedInterests(index: indexPath.item)
+        viewModel.removeSelectedInterests(indexPath: indexPath)
     }
-    
-    
 }
-

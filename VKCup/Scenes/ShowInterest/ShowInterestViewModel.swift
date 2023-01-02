@@ -5,7 +5,7 @@
 
 import Foundation
 
-final class SecondViewModel {
+final class ShowInterestViewModel {
     // MARK: - Private properties
     
     private let selectedInterests: [Interest]
