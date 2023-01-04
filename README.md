@@ -1,4 +1,4 @@
-<h1>VKCup-IOS-2022</h1>
+<h1>VKCup-IOS-2022-Qualification</h1>
 
 <h2>Задание</h2>
 
